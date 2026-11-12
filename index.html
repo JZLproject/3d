@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday, My Sweaties Rollade 💗</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,600&family=Dancing+Script:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Confetti & Three.js Library untuk 3D Interactive Box & Envelope -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Background Ambient & Floating Hearts -->
+    <div class="ambient-bg">
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+        <div id="hearts-container"></div>
+    </div>
+
+    <!-- Audio Player & Floating Controller -->
+    <audio id="bg-music" loop>
+        <source src="assets/music/birthday.mp3" type="audio/mpeg">
+    </audio>
+    <button id="music-toggle" class="music-btn hidden" aria-label="Toggle Music">
+        <span class="music-icon">♫</span>
+    </button>
+
+    <!-- ==========================================
+         STAGE 1: OPENING
+    =========================================== -->
+    <section id="stage-opening" class="stage active">
+        <div class="glass-card center-content fade-in">
+            <p class="handwritten-accent">Haii, <span class="nickname-text">my sweaties rollade</span> 💗</p>
+            <h1 class="hero-subtitle">I made something special for you...</h1>
+            <button id="btn-open-gift" class="btn-primary pulse-glow">
+                OPEN YOUR GIFT 🎁
+            </button>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         STAGE 2: 3D GIFT BOX (Rotatable & Top-View Contents)
+    =========================================== -->
+    <section id="stage-gift" class="stage hidden">
+        <div class="center-content">
+            <h2 id="gift-prompt" class="section-title">Hmm...<br>I wonder what's inside? 🎁</h2>
+            
+            <!-- 3D Canvas Container untuk Kotak Kado -->
+            <div id="canvas-gift-container" class="canvas-3d-wrapper"></div>
+
+            <p id="gift-hint" class="hint-text">Geser/putar kotaknya ke segala arah & ketuk untuk membuka! ✨</p>
+            <p id="gift-reveal-text" class="handwritten-accent hidden">A little gift... just for you ❤️</p>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         STAGE 3: MAIN JOURNEY (SCROLLABLE)
+    =========================================== -->
+    <main id="stage-journey" class="hidden">
+        
+        <!-- SECTION: HAPPY BIRTHDAY -->
+        <section id="sec-birthday" class="journey-section">
+            <div class="container center-content reveal">
+                <span class="badge-date">26 • 11 • 2026</span>
+                <h1 class="birthday-title">HAPPY<br>BIRTHDAY</h1>
+                <h2 class="recipient-name">MEDINA AYU PRAMESWARI ❤️</h2>
+                <p class="sweet-tagline">Today is your day,<br><span class="nickname-text">my sweaties rollade</span>. 💗</p>
+
+                <!-- Main Photo Frame -->
+                <div class="main-photo-frame floating-slow">
+                    <img src="assets/images/main-photo.jpg" alt="Medina Ayu Prameswari">
+                </div>
+
+                <div class="scroll-indicator">
+                    <span>Scroll down slowly</span>
+                    <div class="arrow-down">↓</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: OUR MEMORIES -->
+        <section id="sec-memories" class="journey-section">
+            <div class="container reveal">
+                <div class="section-header">
+                    <h2 class="serif-title">Little moments,<br>big memories. 📸</h2>
+                    <p class="section-sub">Some moments are small, but somehow they stay forever.</p>
+                </div>
+
+                <div class="memories-gallery">
+                    <div class="memory-card">
+                        <div class="memory-img-box">
+                            <img src="assets/images/memory-01.jpg" alt="Memory 1">
+                        </div>
+                        <p class="memory-caption">One of those little moments I wish I could keep forever.</p>
+                    </div>
+                    <div class="memory-card">
+                        <div class="memory-img-box">
+                            <div class="photo-placeholder">
+                                <span>Memory #02</span>
+                                <small>YOUR PHOTO HERE</small>
+                            </div>
+                        </div>
+                        <p class="memory-caption">Somehow, ordinary moments feel different when they're with you.</p>
+                    </div>
+                    <div class="memory-card">
+                        <div class="memory-img-box">
+                            <div class="photo-placeholder">
+                                <span>Memory #03</span>
+                                <small>YOUR PHOTO HERE</small>
+                            </div>
+                        </div>
+                        <p class="memory-caption">Another memory worth keeping. ❤️</p>
+                    </div>
+                    <div class="memory-card">
+                        <div class="memory-img-box">
+                            <div class="photo-placeholder">
+                                <span>Memory #04</span>
+                                <small>YOUR PHOTO HERE</small>
+                            </div>
+                        </div>
+                        <p class="memory-caption">My favorite place is always wherever I'm with you. ✨</p>
+                    </div>
+                </div>
+                <p class="mobile-swipe-hint">← Geser ke samping untuk melihat foto →</p>
+            </div>
+        </section>
+
+        <!-- SECTION: 3D ROTATABLE LOVE LETTER -->
+        <section id="sec-letter" class="journey-section">
+            <div class="container center-content reveal">
+                <div id="envelope-wrapper" class="envelope-container">
+                    <p class="letter-intro">I wrote something for you... 💌 <br><small style="font-size:0.8rem; opacity:0.7;">(Putar amplopnya & klik untuk membuka)</small></p>
+                    
+                    <!-- 3D Canvas untuk Amplop Interaktif -->
+                    <div id="canvas-envelope-container" class="canvas-envelope-3d"></div>
+
+                    <button id="btn-open-letter" class="btn-secondary">Open letter</button>
+                </div>
+
+                <!-- Letter Paper -->
+                <div id="letter-paper" class="letter-paper hidden">
+                    <div class="letter-content" id="letter-text-body">
+                        <p>Haii, my sweaties rollade... ❤️</p>
+                        <p>Selamat ulang tahun, sayang.</p>
+                        <p>Aku sebenarnya masih bingung harus mulai dari mana, karena ada banyak banget hal yang pengen aku bilang ke kamu.</p>
+                        <p>Tapi kalau hari ini aku cuma boleh bilang satu hal, aku mau bilang kalau aku bersyukur banget bisa kenal kamu dan punya kamu di hidupku.</p>
+                        <p>Kamu mungkin nggak selalu sadar, tapi keberadaan kamu bisa bikin hari-hariku terasa berbeda.</p>
+                        <p>Bahkan hal-hal kecil yang kita lakukan bareng, yang mungkin kelihatannya biasa aja, entah kenapa bisa jadi sesuatu yang selalu aku inget.</p>
+                        <p>Di umur kamu yang baru ini, aku berharap banyak hal baik datang ke hidup kamu.</p>
+                        <p>Semoga semua yang kamu pengenin bisa perlahan tercapai.</p>
+                        <p>Semoga kamu selalu punya alasan buat senyum.</p>
+                        <p>Dan kalau suatu saat hari kamu terasa berat, semoga kamu selalu ingat kalau kamu nggak harus melewatinya sendirian.</p>
+                        <p>Aku nggak bisa janji semuanya bakal selalu sempurna.</p>
+                        <p>Tapi aku bisa berharap supaya kita terus punya banyak kesempatan buat bikin cerita baru.</p>
+                        <p>Ketawa bareng.<br>Saling ganggu.<br>Saling support.<br>Dan menyimpan lebih banyak kenangan.</p>
+                        <p>Jadi hari ini bukan cuma tentang bertambahnya umur kamu.<br>Hari ini adalah tentang merayakan seseorang yang berarti buat aku.</p>
+                        <p>Selamat ulang tahun, Medina. ❤️<br>Semoga tahun ini jadi salah satu tahun terbaik dalam hidup kamu.</p>
+                        <p class="letter-closing">Stay happy, my sweaties rollade.<br>And please remember...<br><strong>you are loved. ❤️</strong></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: OUR LITTLE STORY -->
+        <section id="sec-story" class="journey-section">
+            <div class="container reveal">
+                <div class="section-header">
+                    <h2 class="serif-title">Our Little Story 🫶</h2>
+                    <p class="section-sub">Every story has little moments that make it special.</p>
+                </div>
+
+                <div class="timeline">
+                    <div class="timeline-item reveal">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-card glass-card">
+                            <span class="timeline-tag">THE BEGINNING</span>
+                            <p>Every story has a beginning...</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item reveal">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-card glass-card">
+                            <span class="timeline-tag">THE MOMENTS</span>
+                            <p>Then somehow, little moments became memories.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item reveal">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-card glass-card">
+                            <span class="timeline-tag">TODAY</span>
+                            <p>And here we are... celebrating you today.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item reveal">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-card glass-card">
+                            <span class="timeline-tag">THE FUTURE</span>
+                            <p>I don't know exactly what the future looks like, but I hope there are still many chapters with you.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: A LITTLE MORE (CINEMATIC) -->
+        <section id="sec-cinematic" class="cinematic-section">
+            <div class="container center-content">
+                <p class="cinematic-line reveal">If I could give you one thing...</p>
+                <p class="cinematic-line reveal delay-1">I would give you the ability to see yourself through my eyes.</p>
+                <p class="cinematic-line highlight-rose reveal delay-2">So you could finally understand how special you are to me. ❤️</p>
+            </div>
+        </section>
+
+        <!-- SECTION: ONE LAST SURPRISE -->
+        <section id="sec-last-surprise" class="journey-section">
+            <div class="container center-content reveal">
+                <p class="mystery-text">Wait...</p>
+                <h2 class="serif-title">I still have one last surprise for you.</h2>
+                <p class="section-sub">Are you ready?</p>
+                <button id="btn-to-password" class="btn-primary">
+                    YES, SHOW ME ❤️
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ==========================================
+         STAGE 4: FINAL DOOR / PASSWORD
+    =========================================== -->
+    <section id="stage-password" class="stage hidden">
+        <div class="glass-card center-content password-box">
+            <div id="password-gate">
+                <h2 class="serif-title">THE FINAL DOOR 🔐</h2>
+                <p class="section-sub">Only you can open this.</p>
+                
+                <div class="input-group">
+                    <input type="text" id="password-input" placeholder="Enter the password..." autocomplete="off">
+                </div>
+                
+                <p id="password-error" class="error-msg hidden">
+                    Hmm... that's not it 😝<br>Try again, my sweaties rollade.
+                </p>
+
+                <button id="btn-unlock" class="btn-primary">
+                    UNLOCK MY FINAL GIFT 💝
+                </button>
+            </div>
+
+            <!-- Success State -->
+            <div id="password-success" class="hidden">
+                <div class="success-icon">✨ 💖 ✨</div>
+                <h2 class="serif-title">You got it!</h2>
+                <p class="section-sub">Your final surprise is waiting for you...</p>
+                <button id="btn-final-canva" class="btn-primary pulse-glow">
+                    OPEN YOUR FINAL GIFT ❤️
+                </button>
+            </div>
+
+            <!-- Redirecting Overlay -->
+            <div id="redirect-state" class="hidden">
+                <p class="handwritten-accent">Made with love, just for you. ❤️</p>
+                <p class="loading-text">Opening your final gift...</p>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
